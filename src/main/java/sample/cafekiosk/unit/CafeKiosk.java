@@ -41,7 +41,7 @@ public class CafeKiosk {
 
 	public int calculateTotalPrice() {
 		return beverages.stream()
-			.mapToInt(b -> b.getPrice())
+			.mapToInt(Beverage::getPrice)
 			.sum();
 	}
 
