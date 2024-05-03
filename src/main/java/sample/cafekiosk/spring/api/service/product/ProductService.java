@@ -25,10 +25,11 @@ import sample.cafekiosk.spring.domain.product.ProductSellingStatus;
 public class ProductService {
 
 	private final ProductRepository productRepository;
+	private final ProductNumberFactory productNumberFactory;
 
 	@Transactional
 	public ProductResponse createProduct(ProductCreateServiceRequest request) {
-		String nextProductNumber = createNextProductNumber();
+		String nextProductNumber = productNumberFactory.createNextProductNumber();
 
 		Product product = request.toEntity(nextProductNumber);
 		Product savedProduct = productRepository.save(product);
@@ -44,16 +45,16 @@ public class ProductService {
 			.toList();
 	}
 
-	private String createNextProductNumber() {
-		String latestProductNumber = productRepository.findLatestProductNumber();
-		if (latestProductNumber == null) {
-			return "001";
-		}
-
-		Integer latestProductNumberInt = Integer.parseInt(latestProductNumber);
-		int nextProductNumberInt = latestProductNumberInt + 1;
-
-		return String.format("%03d", nextProductNumberInt);
-	}
+	// private String createNextProductNumber() {
+	// 	String latestProductNumber = productRepository.findLatestProductNumber();
+	// 	if (latestProductNumber == null) {
+	// 		return "001";
+	// 	}
+	//
+	// 	Integer latestProductNumberInt = Integer.parseInt(latestProductNumber);
+	// 	int nextProductNumberInt = latestProductNumberInt + 1;
+	//
+	// 	return String.format("%03d", nextProductNumberInt);
+	// }
 
 }
